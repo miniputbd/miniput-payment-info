@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miniput | Payment Details</title>
+<meta name="description" content="Miniput Payment Details">
+
+<style>
+:root{
+  --cream:#f7f0e4;
+  --card:#fffdf9;
+  --brown:#68452f;
+  --brownDark:#503323;
+  --green:#91a58a;
+  --greenDark:#718769;
+  --greenSoft:#e9efe5;
+  --greenLine:#c9d7c3;
+  --text:#40372f;
+  --muted:#776d64;
+  --border:#dfd5c7;
+  --shadow:0 8px 24px rgba(75,52,35,.055);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--cream);color:var(--text);
+  font-family:"Noto Sans Bengali","Noto Sans",system-ui,-apple-system,
+  BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.22;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Cg fill='none' stroke='%2368452f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='.35'%3E%3Crect x='40' y='40' width='58' height='68' rx='4'/%3E%3Cpath d='M52 92l14-18 10 10 12-16 10 24'/%3E%3Ccircle cx='58' cy='58' r='4'/%3E%3Cpath d='M330 46h34v26h-34z'/%3E%3Cpath d='M330 46l17-11 17 11'/%3E%3Cpath d='M347 46v26'/%3E%3Ccircle cx='150' cy='230' r='16'/%3E%3Ccircle cx='210' cy='230' r='16'/%3E%3Cpath d='M150 214h60l14-30h26'/%3E%3Cpath d='M100 380h36v28h-36z'/%3E%3C/g%3E%3Cg fill='%2391a58a' opacity='.3'%3E%3Ccircle cx='120' cy='100' r='4'/%3E%3Ccircle cx='260' cy='120' r='5'/%3E%3Ccircle cx='420' cy='170' r='4'/%3E%3Ccircle cx='170' cy='330' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat:repeat;
+}
+.page{width:min(920px,calc(100% - 32px));margin:auto;padding:28px 0 48px}
+.header{text-align:center;padding:8px 0 28px}
+.logo{display:block;width:170px;max-width:72%;height:auto;margin:0 auto 28px;opacity:.70}
+.languageSwitch{
+  width:230px;height:48px;margin:0 auto 26px;padding:4px;
+  border:1px solid #d4c5b4;border-radius:50px;background:#fffaf3;
+  display:flex;box-shadow:0 3px 12px rgba(75,52,35,.05)
+}
+.languageSwitch button{
+  flex:1;border:0;border-radius:50px;background:transparent;color:var(--brown);
+  font-size:15px;font-weight:600;cursor:pointer
+}
+.languageSwitch button.active{background:var(--brown);color:#fff}
+.heroTitle{
+  margin:0;color:var(--brownDark);font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(34px,5vw,54px);line-height:1.12;font-weight:700
+}
+.heroSubtitle{
+  margin:14px auto 0;max-width:720px;color:var(--muted);
+  font-size:16px;line-height:1.75
+}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:22px;
+  padding:25px 28px;box-shadow:var(--shadow);margin-bottom:20px
+}
+.sectionHeading{
+  display:flex;align-items:center;gap:12px;margin:0 0 16px;color:var(--green);
+  font-size:24px;line-height:1.35;font-weight:750
+}
+.headingIcon{
+  width:40px;height:40px;flex:0 0 40px;border-radius:13px;background:var(--greenSoft);
+  border:1px solid var(--greenLine);display:flex;align-items:center;justify-content:center;
+  color:var(--greenDark)
+}
+.headingIcon svg{width:22px;height:22px}
+.muted{margin:0;color:var(--muted);font-size:14px;line-height:1.8}
+
+/* Bangla QR */
+.qrCard{text-align:center;padding:28px}
+.qrLead{margin:-3px auto 20px;max-width:680px;color:var(--muted);font-size:15px;line-height:1.8}
+.qrBox{
+  width:min(540px,100%);margin:0 auto;padding:15px;background:#fff;
+  border:1px solid #e1d8cd;border-radius:22px;box-shadow:0 8px 25px rgba(75,52,35,.06)
+}
+.qrBox img{display:block;width:100%;height:auto;border-radius:13px}
+.qrCaption{margin:16px 0 0;color:var(--brown);font-weight:750;font-size:15px}
+
+/* Notice */
+.priorityNotice{
+  border:1px solid var(--greenLine);border-left:5px solid var(--green);
+  background:var(--greenSoft);border-radius:17px;padding:17px 18px;
+  color:#60705b;font-size:14px;line-height:1.8
+}
+.priorityNotice strong{color:#53664e}
+
+/* Banks */
+.bankList{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.bankCard{
+  width:100%;border:1px solid var(--border);background:#fffaf4;border-radius:16px;
+  padding:14px 16px;text-align:left;cursor:pointer;transition:.2s ease;
+  display:flex;align-items:center;gap:12px
+}
+.bankCard:hover{border-color:var(--greenLine)}
+.bankCard.active{border-color:var(--green);background:var(--greenSoft)}
+.bankLogo{
+  width:44px;height:44px;flex:0 0 44px;border-radius:11px;background:#fff;
+  border:1px solid #e2d9ce;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:12px;color:var(--brown)
+}
+.bankText{flex:1}
+.bankLogo img{width:100%;height:100%;object-fit:contain;border-radius:10px}
+.bankName{display:block;font-weight:750;color:var(--brownDark);font-size:14px}
+.bankLogoImg{width:100%;height:100%;object-fit:contain;border-radius:10px}.bankLogoFallback{display:none}.bankExpand{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--greenDark);font-size:20px;transition:.2s}.bankCard.active .bankExpand{transform:rotate(180deg)}
+
+.bankDetails{
+  display:none;border:1px solid var(--greenLine);border-radius:17px;background:#fbfdf9;
+  padding:14px 18px;margin-top:0;animation:slideDown .22s ease
+}
+.bankDetails.open{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.bankDetailsInner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:stretch}
+.detailRows{min-width:0}
+.detailRow{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 0
+}
+.detailRow + .detailRow{border-top:1px solid #e7e1d8}
+.detailText{min-width:0}
+.detailLabel{font-size:12px;color:var(--muted);margin-bottom:3px}
+.detailValue{font-size:14px;color:var(--text);font-weight:700;word-break:break-word}
+.copyBtn{
+  flex:0 0 auto;border:1px solid var(--greenLine);background:var(--greenSoft);
+  color:var(--greenDark);border-radius:9px;padding:7px 10px;font-size:11.5px;
+  font-weight:750;cursor:pointer
+}
+.bankQr{width:min(100%,260px);aspect-ratio:1/1;height:auto;object-fit:contain;border-radius:14px;border:1px solid #e1d8cd;background:#fff;padding:7px;align-self:end;justify-self:end}
+.qrPlaceholder{width:min(100%,260px);aspect-ratio:1/1;height:auto;border-radius:14px;border:1px dashed #d8cec2;display:flex;align-items:center;justify-content:center;text-align:center;color:#9a9188;font-size:11px;line-height:1.5;padding:10px;background:#fff;align-self:end;justify-self:end}
+
+/* Alternative */
+.secondary{
+  border:1px solid var(--border);border-radius:18px;background:#fffaf4;overflow:hidden
+}
+.secondaryBtn{
+  width:100%;border:0;background:transparent;padding:13px 16px;display:flex;
+  align-items:center;justify-content:flex-start;cursor:pointer;color:var(--muted);
+  font:inherit;font-size:13px;font-weight:650;text-align:left
+}
+.secondaryBody{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.secondary.open .secondaryBody{max-height:500px}
+.secondaryInner{padding:0 16px 16px}
+.altItem{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:13px 0;border-top:1px solid #e7e1d8
+}
+.altName{color:var(--brownDark);font-size:13px;font-weight:750}
+.altSub{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+.altQr{
+  width:72px;height:72px;object-fit:cover;border-radius:9px;background:#fff;
+  border:1px solid #e1d8cd;padding:3px;flex:0 0 72px
+}
+.bkashBlock{
+  padding:13px 0;border-top:1px solid #e7e1d8
+}
+.bkashTitle{color:var(--brownDark);font-size:13px;font-weight:750}
+.bkashNumber{
+  margin-top:3px;color:var(--muted);font-weight:400;letter-spacing:0;font-size:11.5px;
+  user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;
+  -webkit-touch-callout:none;cursor:default
+}
+.bkashHint{margin:5px 0 0;color:var(--muted);font-size:11.5px;line-height:1.6}
+
+/* Confirmation */
+.confirmText{margin:0 0 17px;color:var(--muted);font-size:14px;line-height:1.85}
+.contactGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.contact{
+  display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;
+  padding:11px 10px;border:1px solid var(--border);border-radius:13px;
+  background:#fffaf4;color:var(--brown);text-decoration:none;font-size:12.5px;font-weight:750
+}
+.contact:hover{border-color:var(--greenLine);background:var(--greenSoft)}
+.contact svg{width:18px;height:18px;flex:0 0 18px}
+
+/* Important information */
+.infoList{margin:0;padding-left:21px;color:var(--muted);font-size:14px;line-height:1.85}
+.infoList li{padding-left:4px}
+.infoList li + li{margin-top:6px}
+
+/* Footer */
+.footer{margin-top:28px;padding-top:20px;border-top:1px solid var(--border);text-align:center}
+.footerLinks{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.footerLink{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid #e4dbcf;
+  border-radius:50px;background:#fffdf9;color:var(--brown);text-decoration:none;
+  font-size:12px;font-weight:700
+}
+.footerLink svg{width:16px;height:16px}
+.footerCopy{margin:12px 0 0;color:#9a9188;font-size:11px}
+
+@media(max-width:700px){
+  .bankDetailsInner{grid-template-columns:1fr 92px}
+  .bankQr,.qrPlaceholder{width:min(100%,210px);aspect-ratio:1/1;height:auto;min-height:0}
+  .contactGrid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .page{width:calc(100% - 18px);padding-top:20px}
+  .logo{width:150px;margin-bottom:24px}
+  .languageSwitch{margin-bottom:24px}
+  .heroTitle{font-size:29px}
+  .heroSubtitle{font-size:14px}
+  .card{padding:20px 17px;border-radius:18px}
+  .qrCard{padding:20px 15px}
+  .qrBox{padding:9px;border-radius:17px}
+  .sectionHeading{font-size:20px;gap:10px}
+  .headingIcon{width:37px;height:37px;flex-basis:37px;border-radius:12px}
+  .headingIcon svg{width:20px;height:20px}
+  .priorityNotice{font-size:13px;padding:15px}
+  .bankDetails{padding:12px 13px}
+  .bankDetailsInner{grid-template-columns:minmax(0,1fr) 78px;gap:10px}
+  .bankQr,.qrPlaceholder{width:min(100%,210px);aspect-ratio:1/1;height:auto;min-height:0}
+  .detailRow{gap:7px;padding:9px 0}
+  .detailValue{font-size:13px}
+  .copyBtn{padding:6px 8px;font-size:10.5px}
+  .infoList{font-size:13px}
+}
+
+/* Final responsive refinements */
+header img[src*="miniput-logo"]{opacity:.70}
+
+/* Main Bangla QR: prominent but with breathing room */
+.qrImage,.mainQr img,.qrWrap img,.primaryQr img{
+  width:min(100%,340px) !important;
+  max-width:340px !important;
+  height:auto !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+
+/* Bank details: desktop 50/50 with perfect-square QR */
+.bankDetailsInner{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:22px !important;
+  align-items:stretch !important;
+}
+.bankQr,.qrPlaceholder{
+  width:min(100%,260px) !important;
+  aspect-ratio:1/1 !important;
+  height:auto !important;
+  min-height:0 !important;
+  align-self:end !important;
+  justify-self:center !important;
+  object-fit:contain !important;
+}
+
+/* Contact icons: fixed square geometry so they never flatten */
+.contact svg{
+  width:22px !important;
+  height:22px !important;
+  min-width:22px !important;
+  min-height:22px !important;
+  flex:0 0 22px !important;
+  display:block !important;
+  overflow:visible !important;
+}
+@media(max-width:640px){
+  .qrImage,.mainQr img,.qrWrap img,.primaryQr img{
+    width:min(100%,285px) !important;
+    max-width:285px !important;
+  }
+  .bankDetailsInner{
+    grid-template-columns:1fr !important;
+    gap:18px !important;
+  }
+  .bankQr,.qrPlaceholder{
+    width:160px !important;
+    height:160px !important;
+    aspect-ratio:1/1 !important;
+    justify-self:center !important;
+    align-self:auto !important;
+  }
+}
+
+
+.prePaymentInfo{
+  background:var(--redSoft,#f5e5de) !important;
+  border-color:rgba(185,104,86,.30) !important;
+}
+.prePaymentInfo h2,.prePaymentInfo h3,.prePaymentInfo .sectionTitle{
+  color:var(--red,#b96856) !important;
+}
+.prePaymentInfo .iconBox,.prePaymentInfo .sectionIcon{
+  color:var(--red,#b96856) !important;
+  background:rgba(185,104,86,.10) !important;
+}
+
+</style>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Miniput | Payment Details">
+  <meta property="og:description" content="Miniput Payment Details">
+  <meta property="og:url" content="https://miniputbd.github.io/miniput-payment-info/">
+  <meta property="og:image" content="https://miniputbd.github.io/miniput-payment-info/thumbnail.jpg">
+  <meta property="og:image:secure_url" content="https://miniputbd.github.io/miniput-payment-info/thumbnail.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://miniputbd.github.io/miniput-payment-info/thumbnail.jpg">
+</head>
+
+<body>
+<div class="page">
+
+<header class="header">
+  <!-- Replace this file with the final Miniput logo filename when supplied -->
+  <img class="logo" src="./miniput-logo.png" alt="Miniput">
+
+  <div class="languageSwitch" aria-label="Language">
+    <button id="bnBtn" class="active">বাংলা</button>
+    <button id="enBtn">English</button>
+  </div>
+
+  <h1 class="heroTitle" id="title">পেমেন্ট ডিটেইলস</h1>
+  <p class="heroSubtitle" id="subtitle">
+    আপনার অর্ডারটি নিশ্চিত করতে অনুগ্রহ করে আমাদের প্রতিনিধির জানানো নির্ধারিত পরিমাণ পেমেন্ট সম্পন্ন করুন।
+  </p>
+</header>
+
+
+
+<footer class="footer">
+  <div class="footerLinks">
+    <a class="footerLink" href="https://miniput.store" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21"/><path d="M12 3c-2.4 2.5-3.6 5.5-3.6 9S9.6 18.5 12 21"/></svg>
+      miniput.store
+    </a>
+    <a class="footerLink" href="https://www.facebook.com/miniput" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.6 21v-8h2.7l.4-3h-3.1V8.1c0-.87.24-1.46 1.5-1.46h1.7V4a22 22 0 0 0-2.47-.13c-2.45 0-4.13 1.5-4.13 4.25V10H8v3h2.2v8h3.4Z"/></svg>
+      Miniput
+    </a>
+    <a class="footerLink" href="https://www.instagram.com/miniputcrafts/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.7" r="1"/></svg>
+      Miniput Crafts
+    </a>
+  </div>
+  <p class="footerCopy">Miniput — All Rights Reserved.</p>
+</footer>
+
+</div>
+
+<script>
+const texts={
+bn:{
+ title:"পেমেন্ট ডিটেইলস",
+ subtitle:"আপনার অর্ডারটি নিশ্চিত করতে অনুগ্রহ করে আমাদের প্রতিনিধির জানানো নির্ধারিত পরিমাণ পেমেন্ট সম্পন্ন করুন।",
+ qrHeading:"বাংলা কিউআর",
+ qrLead:"আপনার কাছে উপলভ্য যেকোনো পেমেন্ট মাধ্যম থেকে নিচের কিউআর কোডটি স্ক্রিনশট নিয়ে বা স্ক্রিনশট নিয়ে বা স্ক্যান করে পেমেন্ট করুন।",
+ qrCaption:"স্ক্রিনশট নিয়ে বা স্ক্যান করে পেমেন্ট করুন",
+ priority:"2,000 টাকার বেশি পেমেন্টের ক্ষেত্রে অনুগ্রহ করে <strong>Bank Transfer(NPSB)</strong> ব্যবহার করার জন্য আমাদের আন্তরিক অনুরোধ। এতে আমাদের মতো ছোট উদ্যোক্তাদের জন্য পেমেন্ট গ্রহণের অতিরিক্ত খরচ কিছুটা কমে। আপনার সহযোগিতা আমাদের জন্য অনেক মূল্যবান। ধন্যবাদ। 🌻",
+ bankHeading:"Bank Transfer(NPSB)",
+ bankIntro:"ব্যাংক ট্রান্সফারের জন্য আপনার সুবিধামতো ব্যাংক নির্বাচন করুন।",
+ accountNameLabel:"অ্যাকাউন্টের নাম",accountNumberLabel:"অ্যাকাউন্ট নম্বর",routingLabel:"রাউটিং নম্বর",branchLabel:"শাখা",
+ alternative:"বিকল্প",pathaoTitle:"Pathao Pay",pathaoSub:"Pathao Pay Bangla QR",bkashTitle:"bKash Merchant",
+ confirmHeading:"পেমেন্ট নিশ্চিত করুন",
+ confirmText:"পেমেন্ট সম্পন্ন করার পর, আমাদের প্রতিনিধির সাথে যে মাধ্যমে কথা হয়েছে, সেখানেই <strong>পেমেন্ট স্ক্রিনশট বা পেমেন্টের বিষয়টি জানিয়ে দিন।</strong>",
+ messenger1:"Messenger: Miniput",instagram:"Instagram: Miniput",messenger2:"Messenger: Miniput BD",whatsapp:"WhatsApp",
+ importantHeading:"গুরুত্বপূর্ণ তথ্য",
+ info1:"রেফারেন্সে অবশ্যই আপনার Facebook আইডির নাম, Instagram আইডির নাম অথবা আপনার সম্পূর্ণ নাম উল্লেখ করুন।",
+ info2:"পেমেন্ট করার আগে সঠিক অ্যামাউন্ট নিশ্চিত করুন।",
+ info3:"Miniput কখনোই কোনো ব্যক্তিগত নম্বরে পেমেন্ট গ্রহণ করে না।",
+ copy:"কপি",copied:"কপি হয়েছে"
+},
+en:{
+ title:"Payment Details",
+ subtitle:"To confirm your order, please complete the payment amount communicated to you by our representative.",
+ qrHeading:"Bangla QR",
+ qrLead:"Scan the QR code below using any payment method available to you and complete the payment.",
+ qrCaption:"Scan to Pay",
+ priority:"For payments above 2,000 taka, we sincerely request that you use <strong>Bank Transfer(NPSB)</strong>. This helps reduce payment acceptance costs for a small business like ours. Your cooperation means a lot to us. Thank you. 🌻",
+ bankHeading:"Bank Transfer(NPSB)",
+ bankIntro:"Choose your preferred bank for bank transfer.",
+ accountNameLabel:"Account Name",accountNumberLabel:"Account Number",routingLabel:"Routing Number",branchLabel:"Branch",
+ alternative:"Alternative",pathaoTitle:"Pathao Pay",pathaoSub:"Pathao Pay Bangla QR",bkashTitle:"bKash Merchant",
+ confirmHeading:"Confirm Your Payment",
+ confirmText:"After completing the payment, please send the <strong>payment screenshot or payment confirmation</strong> through the same channel where you were communicating with our representative.",
+ messenger1:"Messenger: Miniput",instagram:"Instagram: Miniput",messenger2:"Messenger: Miniput BD",whatsapp:"WhatsApp",
+ importantHeading:"Important Information",
+ info1:"In the reference, please mention your Facebook ID name, Instagram ID name, or your full name.",
+ info2:"Confirm the correct amount before making the payment.",
+ info3:"Miniput never accepts payments to any personal number.",
+ copy:"Copy",copied:"Copied"
+}
+};
+
+let lang="bn";
+const $=id=>document.getElementById(id);
+
+function setLang(l){
+ lang=l;const t=texts[l];
+ document.documentElement.lang=l;
+ $("title").textContent=t.title;
+ $("subtitle").textContent=t.subtitle;
+ $("qrHeading").textContent=t.qrHeading;
+ $("qrLead").textContent=t.qrLead;
+ $("qrCaption").textContent=t.qrCaption;
+ $("priorityNotice").innerHTML=t.priority;
+ $("bankHeading").textContent=t.bankHeading;
+ $("bankIntro").textContent=t.bankIntro;
+ $("accountNameLabel").textContent=t.accountNameLabel;
+ $("accountNumberLabel").textContent=t.accountNumberLabel;
+ $("routingLabel").textContent=t.routingLabel;
+ $("branchLabel").textContent=t.branchLabel;
+ $("alternativeTitle").textContent=t.alternative;
+ $("pathaoTitle").textContent=t.pathaoTitle;
+ $("pathaoSub").textContent=t.pathaoSub;
+ $("bkashTitle").textContent=t.bkashTitle;
+ $("confirmHeading").textContent=t.confirmHeading;
+ $("confirmText").innerHTML=t.confirmText;
+ $("messenger1").textContent=t.messenger1;
+ $("instagram").textContent=t.instagram;
+ $("messenger2").textContent=t.messenger2;
+ $("whatsapp").textContent=t.whatsapp;
+ $("importantHeading").textContent=t.importantHeading;
+ $("info1").textContent=t.info1;
+ $("info2").textContent=t.info2;
+ $("info3").textContent=t.info3;
+ document.querySelectorAll(".copyBtn").forEach(b=>b.textContent=t.copy);
+ $("bnBtn").classList.toggle("active",l==="bn");
+ $("enBtn").classList.toggle("active",l==="en");
+}
+$("bnBtn").onclick=()=>setLang("bn");
+$("enBtn").onclick=()=>setLang("en");
+
+document.querySelectorAll(".bankCard").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+   const details=$(btn.dataset.bank+"Details");
+   const wasOpen=details.classList.contains("open");
+   document.querySelectorAll(".bankCard").forEach(x=>x.classList.remove("active"));
+   document.querySelectorAll(".bankDetails").forEach(x=>x.classList.remove("open"));
+   if(!wasOpen){btn.classList.add("active");details.classList.add("open");}
+ });
+});
+
+$("alternativeBtn").addEventListener("click",()=>{
+ $("alternative").classList.toggle("open");
+});
+
+document.querySelectorAll(".copyBtn").forEach(button=>{
+ button.addEventListener("click",async()=>{
+   const id=button.dataset.copy;
+   const value=$(id).textContent.trim();
+   if(!value || value==="আপনার তথ্য") return;
+   try{
+     await navigator.clipboard.writeText(value);
+     const old=texts[lang].copy;
+     button.textContent=texts[lang].copied;
+     setTimeout(()=>button.textContent=old,1400);
+   }catch(e){}
+ });
+});
+</script>
+</body>
+</html>
