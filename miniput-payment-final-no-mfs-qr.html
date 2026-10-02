@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html lang="bn">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Miniput | Payment Details</title>
+<meta content="Miniput Payment Details" name="description"/>
+<style>
+:root{
+  --cream:#f7f0e4;
+  --card:#fffdf9;
+  --brown:#68452f;
+  --brownDark:#503323;
+  --green:#91a58a;
+  --greenDark:#718769;
+  --greenSoft:#e9efe5;
+  --greenLine:#c9d7c3;
+  --text:#40372f;
+  --muted:#776d64;
+  --border:#dfd5c7;
+  --shadow:0 8px 24px rgba(75,52,35,.055);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--cream);color:var(--text);
+  font-family:"Noto Sans Bengali","Noto Sans",system-ui,-apple-system,
+  BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.22;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Cg fill='none' stroke='%2368452f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='.35'%3E%3Crect x='40' y='40' width='58' height='68' rx='4'/%3E%3Cpath d='M52 92l14-18 10 10 12-16 10 24'/%3E%3Ccircle cx='58' cy='58' r='4'/%3E%3Cpath d='M330 46h34v26h-34z'/%3E%3Cpath d='M330 46l17-11 17 11'/%3E%3Cpath d='M347 46v26'/%3E%3Ccircle cx='150' cy='230' r='16'/%3E%3Ccircle cx='210' cy='230' r='16'/%3E%3Cpath d='M150 214h60l14-30h26'/%3E%3Cpath d='M100 380h36v28h-36z'/%3E%3C/g%3E%3Cg fill='%2391a58a' opacity='.3'%3E%3Ccircle cx='120' cy='100' r='4'/%3E%3Ccircle cx='260' cy='120' r='5'/%3E%3Ccircle cx='420' cy='170' r='4'/%3E%3Ccircle cx='170' cy='330' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat:repeat;
+}
+.page{width:min(920px,calc(100% - 32px));margin:auto;padding:28px 0 48px}
+.header{text-align:center;padding:8px 0 28px}
+.logo{display:block;width:170px;max-width:72%;height:auto;margin:0 auto 28px}
+.languageSwitch{
+  width:230px;height:48px;margin:0 auto 26px;padding:4px;
+  border:1px solid #d4c5b4;border-radius:50px;background:#fffaf3;
+  display:flex;box-shadow:0 3px 12px rgba(75,52,35,.05)
+}
+.languageSwitch button{
+  flex:1;border:0;border-radius:50px;background:transparent;color:var(--brown);
+  font-size:15px;font-weight:600;cursor:pointer
+}
+.languageSwitch button.active{background:var(--brown);color:#fff}
+.heroTitle{
+  margin:0;color:var(--brownDark);font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(34px,5vw,54px);line-height:1.12;font-weight:700
+}
+.heroSubtitle{
+  margin:14px auto 0;max-width:720px;color:var(--muted);
+  font-size:16px;line-height:1.75
+}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:22px;
+  padding:25px 28px;box-shadow:var(--shadow);margin-bottom:20px
+}
+.sectionHeading{
+  display:flex;align-items:center;gap:12px;margin:0 0 16px;color:var(--green);
+  font-size:24px;line-height:1.35;font-weight:750
+}
+.headingIcon{
+  width:40px;height:40px;flex:0 0 40px;border-radius:13px;background:var(--greenSoft);
+  border:1px solid var(--greenLine);display:flex;align-items:center;justify-content:center;
+  color:var(--greenDark)
+}
+.headingIcon svg{width:22px;height:22px}
+.muted{margin:0;color:var(--muted);font-size:14px;line-height:1.8}
+
+/* Bangla QR */
+.qrCard{text-align:center;padding:28px}
+.qrLead{margin:-3px auto 20px;max-width:680px;color:var(--muted);font-size:15px;line-height:1.8}
+.qrBox{
+  width:min(540px,100%);margin:0 auto;padding:15px;background:#fff;
+  border:1px solid #e1d8cd;border-radius:22px;box-shadow:0 8px 25px rgba(75,52,35,.06)
+}
+.qrBox img{display:block;width:100%;height:auto;border-radius:13px}
+.qrCaption{margin:16px 0 0;color:var(--brown);font-weight:750;font-size:15px}
+
+/* Notice */
+.priorityNotice{
+  border:1px solid var(--greenLine);border-left:5px solid var(--green);
+  background:var(--greenSoft);border-radius:17px;padding:17px 18px;
+  color:#60705b;font-size:14px;line-height:1.8
+}
+.priorityNotice strong{color:#53664e}
+
+/* Banks */
+.bankList{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.bankCard{
+  width:100%;border:1px solid var(--border);background:#fffaf4;border-radius:16px;
+  padding:14px 16px;text-align:left;cursor:pointer;transition:.2s ease;
+  display:flex;align-items:center;gap:12px
+}
+.bankCard:hover{border-color:var(--greenLine)}
+.bankCard.active{border-color:var(--green);background:var(--greenSoft)}
+.bankLogo{
+  width:44px;height:44px;flex:0 0 44px;border-radius:11px;background:#fff;
+  border:1px solid #e2d9ce;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:12px;color:var(--brown)
+}
+.bankText{flex:1}
+.bankLogo img{width:100%;height:100%;object-fit:contain;border-radius:10px}
+.bankName{display:block;font-weight:750;color:var(--brownDark);font-size:14px}
+.bankLogoImg{width:100%;height:100%;object-fit:contain;border-radius:10px}.bankLogoFallback{display:none}.bankExpand{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--greenDark);font-size:20px;transition:.2s}.bankCard.active .bankExpand{transform:rotate(180deg)}
+
+.bankDetails{
+  display:none;border:1px solid var(--greenLine);border-radius:17px;background:#fbfdf9;
+  padding:14px 18px;margin-top:0;animation:slideDown .22s ease
+}
+.bankDetails.open{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.bankDetailsInner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:stretch}
+.detailRows{min-width:0}
+.detailRow{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 0
+}
+.detailRow + .detailRow{border-top:1px solid #e7e1d8}
+.detailText{min-width:0}
+.detailLabel{font-size:12px;color:var(--muted);margin-bottom:3px}
+.detailValue{font-size:14px;color:var(--text);font-weight:700;word-break:break-word}
+.copyBtn{
+  flex:0 0 auto;border:1px solid var(--greenLine);background:var(--greenSoft);
+  color:var(--greenDark);border-radius:9px;padding:7px 10px;font-size:11.5px;
+  font-weight:750;cursor:pointer
+}
+.bankQr{width:min(100%,260px);aspect-ratio:1/1;height:auto;object-fit:contain;border-radius:14px;border:1px solid #e1d8cd;background:#fff;padding:7px;align-self:end;justify-self:end}
+.qrPlaceholder{width:min(100%,260px);aspect-ratio:1/1;height:auto;border-radius:14px;border:1px dashed #d8cec2;display:flex;align-items:center;justify-content:center;text-align:center;color:#9a9188;font-size:11px;line-height:1.5;padding:10px;background:#fff;align-self:end;justify-self:end}
+
+/* Alternative */
+.secondary{
+  border:1px solid var(--border);border-radius:18px;background:#fffaf4;overflow:hidden
+}
+.secondaryBtn{
+  width:100%;border:0;background:transparent;padding:13px 16px;display:flex;
+  align-items:center;justify-content:flex-start;cursor:pointer;color:var(--muted);
+  font:inherit;font-size:13px;font-weight:650;text-align:left
+}
+.secondaryBody{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.secondary.open .secondaryBody{max-height:500px}
+.secondaryInner{padding:0 16px 16px}
+.altItem{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:13px 0;border-top:1px solid #e7e1d8
+}
+.altName{color:var(--brownDark);font-size:13px;font-weight:750}
+.altSub{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+.altQr{
+  width:72px;height:72px;object-fit:cover;border-radius:9px;background:#fff;
+  border:1px solid #e1d8cd;padding:3px;flex:0 0 72px
+}
+.bkashBlock{
+  padding:13px 0;border-top:1px solid #e7e1d8
+}
+.bkashTitle{color:var(--brownDark);font-size:13px;font-weight:750}
+.bkashNumber{
+  margin-top:3px;color:var(--muted);font-weight:400;letter-spacing:0;font-size:11.5px;
+  user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;
+  -webkit-touch-callout:none;cursor:default
+}
+.bkashHint{margin:5px 0 0;color:var(--muted);font-size:11.5px;line-height:1.6}
+
+/* Confirmation */
+.confirmText{margin:0 0 17px;color:var(--muted);font-size:14px;line-height:1.85}
+.contactGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.contact{
+  display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;
+  padding:11px 10px;border:1px solid var(--border);border-radius:13px;
+  background:#fffaf4;color:var(--brown);text-decoration:none;font-size:12.5px;font-weight:750
+}
+.contact:hover{border-color:var(--greenLine);background:var(--greenSoft)}
+.contact svg{width:18px;height:18px;flex:0 0 18px}
+
+/* Important information */
+.infoList{margin:0;padding-left:21px;color:var(--muted);font-size:14px;line-height:1.85}
+.infoList li{padding-left:4px}
+.infoList li + li{margin-top:6px}
+
+/* Footer */
+.footer{margin-top:28px;padding-top:20px;border-top:1px solid var(--border);text-align:center}
+.footerLinks{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.footerLink{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid #e4dbcf;
+  border-radius:50px;background:#fffdf9;color:var(--brown);text-decoration:none;
+  font-size:12px;font-weight:700
+}
+.footerLink svg{width:16px;height:16px}
+.footerCopy{margin:12px 0 0;color:#9a9188;font-size:11px}
+
+@media(max-width:700px){
+  .bankDetailsInner{grid-template-columns:1fr 92px}
+  .bankQr,.qrPlaceholder{width:min(100%,210px);aspect-ratio:1/1;height:auto;min-height:0}
+  .contactGrid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .page{width:calc(100% - 18px);padding-top:20px}
+  .logo{width:150px;margin-bottom:24px}
+  .languageSwitch{margin-bottom:24px}
+  .heroTitle{font-size:29px}
+  .heroSubtitle{font-size:14px}
+  .card{padding:20px 17px;border-radius:18px}
+  .qrCard{padding:20px 15px}
+  .qrBox{padding:9px;border-radius:17px}
+  .sectionHeading{font-size:20px;gap:10px}
+  .headingIcon{width:37px;height:37px;flex-basis:37px;border-radius:12px}
+  .headingIcon svg{width:20px;height:20px}
+  .priorityNotice{font-size:13px;padding:15px}
+  .bankDetails{padding:12px 13px}
+  .bankDetailsInner{grid-template-columns:minmax(0,1fr) 78px;gap:10px}
+  .bankQr,.qrPlaceholder{width:min(100%,210px);aspect-ratio:1/1;height:auto;min-height:0}
+  .detailRow{gap:7px;padding:9px 0}
+  .detailValue{font-size:13px}
+  .copyBtn{padding:6px 8px;font-size:10.5px}
+  .infoList{font-size:13px}
+}
+
+/* Final refinements */
+.logo{opacity:.70}
+
+/* Main Bangla QR: slightly smaller with breathing room */
+.qrBox{max-width:360px;margin-left:auto;margin-right:auto}
+.qrBox img{width:100%;height:auto}
+
+/* Important information moved before bank selection */
+.prePaymentInfo{
+  background:#fffdf9;
+  border-color:#e6cfc7;
+}
+.prePaymentInfo .sectionHeading{color:#b96856}
+.prePaymentInfo .headingIcon{
+  color:#b96856;
+  background:#f5e5de;
+  border-color:#e8c8bd;
+}
+
+/* Contact icons keep a clean square aspect ratio */
+.contact svg{
+  width:20px !important;
+  height:20px !important;
+  min-width:20px !important;
+  min-height:20px !important;
+  flex:0 0 20px !important;
+  display:block;
+}
+
+/* Desktop bank details: equal columns, perfect square QR */
+.bankDetailsInner{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:22px !important;
+}
+.bankQr,.qrPlaceholder{
+  width:min(100%,260px) !important;
+  height:auto !important;
+  aspect-ratio:1/1 !important;
+  min-height:0 !important;
+  justify-self:center !important;
+  align-self:end !important;
+}
+
+@media(max-width:640px){
+  .qrBox{max-width:285px}
+  .bankDetailsInner{
+    grid-template-columns:1fr !important;
+    gap:18px !important;
+  }
+  .bankQr,.qrPlaceholder{
+    width:160px !important;
+    height:160px !important;
+    aspect-ratio:1/1 !important;
+    justify-self:center !important;
+    align-self:auto !important;
+  }
+}
+
+.compactImportant{padding:18px 22px!important;border:1px solid rgba(104,69,47,.12)!important;border-left:5px solid rgba(104,69,47,.48)!important;border-radius:18px!important;background:rgba(185,104,86,.045)!important;box-shadow:none!important}
+.compactImportant .sectionHeading{margin-bottom:9px!important;color:var(--brown,#68452f)!important}
+.compactImportant .sectionHeading span:last-child{font-size:17px!important;line-height:1.3!important}
+.compactImportant .headingIcon{width:32px!important;height:32px!important;min-width:32px!important;color:var(--brown,#68452f)!important;background:rgba(185,104,86,.08)!important;border-color:rgba(185,104,86,.15)!important}
+.compactImportant .infoList{margin:0!important;padding-left:21px!important}
+.compactImportant .infoList li{margin:4px 0!important;color:var(--text,#40372f)!important;line-height:1.6!important}
+@media(max-width:640px){.compactImportant{padding:14px 16px!important;border-radius:16px!important}.compactImportant .sectionHeading span:last-child{font-size:15px!important}.compactImportant .headingIcon{width:29px!important;height:29px!important;min-width:29px!important}.compactImportant .infoList{padding-left:19px!important}.compactImportant .infoList li{font-size:13px!important;line-height:1.5!important}}
+
+/* Important Information: same card construction as the 2,000 notice */
+.importantExactLayout{
+  background:var(--card,#fffdf9) !important;
+  border:1px solid var(--border,#dfd5c7) !important;
+  border-radius:22px !important;
+  padding:25px 28px !important;
+  box-shadow:var(--shadow,0 8px 24px rgba(75,52,35,.055)) !important;
+}
+
+/* Inner notice follows the same inset-card geometry; only accent tone differs */
+.importantExactLayout .sectionHeading{
+  margin-bottom:10px !important;
+  color:var(--brown,#68452f) !important;
+}
+.importantExactLayout .headingIcon{
+  color:var(--brown,#68452f) !important;
+  background:rgba(185,104,86,.08) !important;
+  border-color:rgba(185,104,86,.16) !important;
+}
+.importantExactLayout .infoList{
+  margin:0 !important;
+  padding:16px 18px 16px 40px !important;
+  border:1px solid rgba(185,104,86,.18) !important;
+  border-left:5px solid rgba(185,104,86,.52) !important;
+  border-radius:18px !important;
+  background:rgba(185,104,86,.055) !important;
+}
+.importantExactLayout .infoList li{
+  margin:4px 0 !important;
+  color:var(--text,#40372f) !important;
+  line-height:1.6 !important;
+}
+
+@media(max-width:640px){
+  .importantExactLayout{
+    padding:20px 17px !important;
+    border-radius:22px !important;
+  }
+  .importantExactLayout .infoList{
+    padding:13px 14px 13px 34px !important;
+    border-radius:16px !important;
+  }
+}
+
+.bankQrWrap{display:flex;align-items:center;justify-content:center;width:100%;min-height:100%}
+.bankQrImage{display:block;width:min(100%,320px);aspect-ratio:1/1;object-fit:contain;background:#fff;border:1px solid var(--border,#dfd5c7);border-radius:18px;padding:10px}
+@media(max-width:640px){.bankQrWrap{margin-top:4px}.bankQrImage{width:160px;height:160px;padding:7px;border-radius:15px}}
+
+.brandHeadingIcon{overflow:hidden;background:#fff}
+.brandHeadingIcon img{width:100%;height:100%;object-fit:contain;display:block}
+.mfsHeadingIcon svg{width:22px;height:22px}
+.mfsType{display:block;margin-top:3px;font-size:12px;font-weight:600;color:var(--muted);line-height:1.25}
+.mfsCard.active{border-color:var(--green);background:var(--greenSoft)}
+</style>
+<meta content="website" property="og:type"/><meta content="Miniput | Payment Details" property="og:title"/><meta content="Miniput Payment Details" property="og:description"/><meta content="https://miniputbd.github.io/miniput-payment-info/" property="og:url"/><meta content="https://miniputbd.github.io/miniput-payment-info/thumbnail.jpg" property="og:image"/><meta content="https://miniputbd.github.io/miniput-payment-info/thumbnail.jpg" property="og:image:secure_url"/><meta content="image/jpeg" property="og:image:type"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="https://miniputbd.github.io/miniput-payment-info/thumbnail.jpg" name="twitter:image"/></head>
+<body>
+<div class="page">
+<header class="header">
+<!-- Replace this file with the final Miniput logo filename when supplied -->
+<img alt="Miniput" class="logo" src="./miniput-logo.png"/>
+<div aria-label="Language" class="languageSwitch">
+<button class="active" id="bnBtn">বাংলা</button>
+<button id="enBtn">English</button>
+</div>
+<h1 class="heroTitle" id="title">পেমেন্ট ডিটেইলস</h1>
+<p class="heroSubtitle" id="subtitle">
+    আপনার অর্ডারটি নিশ্চিত করতে অনুগ্রহ করে আমাদের প্রতিনিধির জানানো নির্ধারিত পরিমাণ পেমেন্ট সম্পন্ন করুন।
+  </p>
+</header>
+<section class="card qrCard">
+<h2 class="sectionHeading" style="justify-content:center">
+<span aria-hidden="true" class="headingIcon brandHeadingIcon"><img alt="" src="./banglaqrlogo.png"/></span>
+<span id="qrHeading">বাংলা কিউআর</span>
+</h2>
+<p class="qrLead" id="qrLead">
+    আপনার কাছে উপলভ্য যেকোনো পেমেন্ট মাধ্যম থেকে নিচের কিউআর কোডটি স্ক্যান করে পেমেন্ট করুন।
+  </p>
+<div class="qrBox">
+<img alt="Pathao Pay Bangla QR" src="./PathaoPay.jpg"/>
+</div>
+<p class="qrCaption" id="qrCaption">স্ক্রিনশট নিয়ে বা স্ক্যান করে পেমেন্ট করুন</p>
+</section>
+<section class="card prePaymentInfo compactImportant importantExactLayout">
+<h2 class="sectionHeading">
+<span aria-hidden="true" class="headingIcon">
+<svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 3 21 7v5c0 5-3.6 8-9 9-5.4-1-9-4-9-9V7l9-4Z"></path>
+<path d="M12 8v5"></path><circle cx="12" cy="16.5" fill="currentColor" r=".7"></circle>
+</svg>
+</span>
+<span id="importantHeading">গুরুত্বপূর্ণ তথ্য</span>
+</h2>
+<ol class="infoList"><li id="info1">রেফারেন্সে অবশ্যই আপনার আইডির নাম বা সম্পূর্ণ নাম উল্লেখ করুন।</li><li id="info2">2,000 টাকার বেশি পেমেন্টের ক্ষেত্রে Bank Transfer (NPSB) ব্যবহারের জন্য বিশেষভাবে অনুরোধ রইল।</li><li id="info3">যেকোনো পরিমাণ পেমেন্টের জন্য Bank Transfer (NPSB) ব্যবহার করতে পারেন।</li></ol>
+</section>
+<section class="card">
+<h2 class="sectionHeading">
+<span aria-hidden="true" class="headingIcon">
+<svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M3 10h18"></path><path d="M4 10l8-6 8 6"></path>
+<path d="M5 10v8M9 10v8M15 10v8M19 10v8"></path><path d="M3 20h18"></path>
+</svg>
+</span>
+<span id="bankHeading">Bank Transfer(NPSB)</span>
+</h2>
+<p class="muted" id="bankIntro">
+    ব্যাংক ট্রান্সফারের জন্য আপনার সুবিধামতো ব্যাংক নির্বাচন করুন।
+  </p>
+<div class="bankList">
+<button class="bankCard" data-bank="brac" type="button">
+<span class="bankLogo"><img alt="BRAC Bank logo" class="bankLogoImg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" src="./brac.jpg"/><span class="bankLogoFallback">BRAC</span></span>
+<span class="bankText"><span class="bankName">BRAC Bank</span></span>
+<span aria-hidden="true" class="bankExpand">⌄</span>
+</button>
+<div class="bankDetails" id="bracDetails">
+<div class="bankDetailsInner">
+<div class="detailRows">
+<div class="detailRow">
+<div class="detailText">
+<div class="detailLabel" id="accountNameLabel">অ্যাকাউন্টের নাম</div>
+<div class="detailValue" id="accountName">আপনার তথ্য</div>
+</div>
+<button class="copyBtn" data-copy="accountName" type="button">কপি</button>
+</div>
+<div class="detailRow">
+<div class="detailText">
+<div class="detailLabel" id="accountNumberLabel">অ্যাকাউন্ট নম্বর</div>
+<div class="detailValue" id="accountNumber">আপনার তথ্য</div>
+</div>
+<button class="copyBtn" data-copy="accountNumber" type="button">কপি</button>
+</div>
+<div class="detailRow">
+<div class="detailText">
+<div class="detailLabel" id="routingLabel">রাউটিং নম্বর</div>
+<div class="detailValue" id="routingNumber">আপনার তথ্য</div>
+</div>
+<button class="copyBtn" data-copy="routingNumber" type="button">কপি</button>
+</div>
+<div class="detailRow">
+<div class="detailText">
+<div class="detailLabel" id="branchLabel">শাখা</div>
+<div class="detailValue" id="branch">আপনার তথ্য</div>
+</div>
+<button class="copyBtn" data-copy="branch" type="button">কপি</button>
+</div>
+</div>
+<!-- Replace with the final BRAC payment QR -->
+<div class="qrPlaceholder" id="bracQrPlaceholder">BRAC<br/>Payment QR</div>
+</div>
+</div>
+<button class="bankCard" data-bank="city" type="button">
+<span class="bankLogo"><img alt="City Bank logo" class="bankLogoImg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" src="./citylogo.png"/><span class="bankLogoFallback">CITY</span></span>
+<span class="bankText"><span class="bankName">City Bank</span></span>
+<span aria-hidden="true" class="bankExpand">⌄</span>
+</button>
+<div class="bankDetails" id="cityDetails">
+<div class="bankDetailsInner">
+<div class="detailRows">
+<div class="detailRow"><div class="detailText"><div class="detailLabel" id="cityAccountNameLabel">অ্যাকাউন্টের নাম</div><div class="detailValue" id="cityAccountName">Rajesh Dhar</div></div><button class="copyBtn" data-copy="cityAccountName" type="button">কপি</button></div>
+<div class="detailRow"><div class="detailText"><div class="detailLabel" id="cityAccountNumberLabel">অ্যাকাউন্ট নম্বর</div><div class="detailValue" id="cityAccountNumber">2303061244001</div></div><button class="copyBtn" data-copy="cityAccountNumber" type="button">কপি</button></div>
+<div class="detailRow"><div class="detailText"><div class="detailLabel" id="cityRoutingLabel">রাউটিং নম্বর</div><div class="detailValue" id="cityRoutingNumber">225150135</div></div><button class="copyBtn" data-copy="cityRoutingNumber" type="button">কপি</button></div>
+<div class="detailRow"><div class="detailText"><div class="detailLabel" id="cityBranchLabel">শাখা</div><div class="detailValue" id="cityBranch">Agrabad, Chattogram</div></div><button class="copyBtn" data-copy="cityBranch" type="button">কপি</button></div>
+</div>
+<div class="bankQrWrap"><img alt="City Bank payment QR" class="bankQrImage" src="./Cityqr.png"/></div>
+</div>
+</div>
+</div>
+</section><section class="card mfsSection">
+<h2 class="sectionHeading">
+<span aria-hidden="true" class="headingIcon mfsHeadingIcon">
+<svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<rect height="18.4" rx="2.2" width="10" x="7" y="2.8"></rect>
+<path d="M10 5.5h4"></path>
+<circle cx="12" cy="17.8" fill="currentColor" r=".8" stroke="none"></circle>
+<path d="M4 9.5c-1.2 1.4-1.2 3.6 0 5M20 9.5c1.2 1.4 1.2 3.6 0 5"></path>
+</svg>
+</span>
+<span id="mfsHeading">MFS Transfer</span>
+</h2>
+<p class="muted" id="mfsIntro">আপনার সুবিধামতো মোবাইল ফিন্যান্সিয়াল সার্ভিস নির্বাচন করুন।</p>
+<div class="bankList mfsList">
+<button class="bankCard mfsCard" data-mfs="nagad" type="button">
+<span class="bankLogo">
+<img alt="Nagad logo" class="bankLogoImg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" src="./nagadlogo.png"/>
+<span class="bankLogoFallback">Nagad</span>
+</span>
+<span class="bankText">
+<span class="bankName">Nagad</span>
+<span class="mfsType" id="nagadType">Personal Account (Send Money)</span>
+</span>
+<span aria-hidden="true" class="bankExpand">⌄</span>
+</button>
+<div class="bankDetails mfsDetails" id="nagadDetails">
+<div class="bankDetailsInner">
+<div class="detailRows">
+<div class="detailRow">
+<div class="detailText">
+<div class="detailLabel" id="nagadNumberLabel">পার্সোনাল নম্বর</div>
+<div class="detailValue" id="nagadNumber">01831523083</div>
+</div>
+<button class="copyBtn" data-copy="nagadNumber" type="button">কপি</button>
+</div>
+</div>
+
+</div>
+</div>
+<button class="bankCard mfsCard" data-mfs="rocket" type="button">
+<span class="bankLogo">
+<img alt="Rocket logo" class="bankLogoImg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" src="./rocketlogo.png"/>
+<span class="bankLogoFallback">Rocket</span>
+</span>
+<span class="bankText">
+<span class="bankName">Rocket</span>
+<span class="mfsType" id="rocketType">Personal Account (Send Money)</span>
+</span>
+<span aria-hidden="true" class="bankExpand">⌄</span>
+</button>
+<div class="bankDetails mfsDetails" id="rocketDetails">
+<div class="bankDetailsInner">
+<div class="detailRows">
+<div class="detailRow">
+<div class="detailText">
+<div class="detailLabel" id="rocketNumberLabel">পার্সোনাল নম্বর</div>
+<div class="detailValue" id="rocketNumber">01831523083</div>
+</div>
+<button class="copyBtn" data-copy="rocketNumber" type="button">কপি</button>
+</div>
+<div class="detailRow">
+<div class="detailText">
+<div class="detailLabel" id="rocketFullNumberLabel">রকেট অ্যাকাউন্ট নম্বর</div>
+<div class="detailValue" id="rocketFullNumber">01831523083-4</div>
+</div>
+<button class="copyBtn" data-copy="rocketFullNumber" type="button">কপি</button>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="secondary" id="alternative">
+<button class="secondaryBtn" id="alternativeBtn" type="button">
+<span id="alternativeTitle">বিকল্প</span>
+</button>
+<div class="secondaryBody">
+<div class="secondaryInner">
+<div class="altItem">
+<div>
+<span class="altName" id="pathaoTitle">Pathao Pay</span>
+<span class="altSub" id="pathaoSub">Pathao Pay Bangla QR</span>
+</div>
+<img alt="Pathao Pay Bangla QR" class="altQr" src="./PathaoPay.jpg"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="card">
+<h2 class="sectionHeading">
+<span aria-hidden="true" class="headingIcon">
+<svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M20 11.5a8 8 0 1 1-2.34-5.66"></path><path d="m20 5-8 8-3-3"></path>
+</svg>
+</span>
+<span id="confirmHeading">পেমেন্ট নিশ্চিত করুন</span>
+</h2>
+<p class="confirmText" id="confirmText">
+    পেমেন্ট সম্পন্ন করার পর, আমাদের প্রতিনিধির সাথে যে মাধ্যমে কথা হয়েছে, সেখানেই <strong>পেমেন্ট স্ক্রিনশট বা পেমেন্টের বিষয়টি জানিয়ে দিন।</strong>
+</p>
+<div class="contactGrid">
+<a class="contact" href="https://m.me/miniput" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.15 2 11.27c0 2.92 1.46 5.52 3.74 7.22V22l3.42-1.88c.9.25 1.86.39 2.84.39 5.52 0 10-4.15 10-9.24S17.52 2 12 2Zm1 12.47-2.55-2.72-4.98 2.72 5.48-5.82 2.61 2.72 4.92-2.72L13 14.47Z"></path></svg>
+<span id="messenger1">Messenger: Miniput</span>
+</a>
+<a class="contact" href="https://www.instagram.com/miniputcrafts/" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="5" width="18" x="3" y="3"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" fill="currentColor" r="1" stroke="none"></circle></svg>
+<span id="instagram">Instagram: Miniput</span>
+</a>
+<a class="contact" href="https://m.me/miniputbd" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.15 2 11.27c0 2.92 1.46 5.52 3.74 7.22V22l3.42-1.88c.9.25 1.86.39 2.84.39 5.52 0 10-4.15 10-9.24S17.52 2 12 2Zm1 12.47-2.55-2.72-4.98 2.72 5.48-5.82 2.61 2.72 4.92-2.72L13 14.47Z"></path></svg>
+<span id="messenger2">Messenger: Miniput BD</span>
+</a>
+<a class="contact" href="https://wa.me/8801740836809" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" viewbox="0 0 24 24"><path d="M12.04 2a9.84 9.84 0 0 0-8.38 15l-1.2 4.38 4.49-1.18A9.93 9.93 0 1 0 12.04 2Zm0 17.96a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-2.66.7.71-2.59-.2-.32a8.05 8.05 0 1 1 6.58 3.52Zm4.42-6.04c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.43-.59 1.63-1.15.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"></path></svg>
+<span id="whatsapp">WhatsApp</span>
+</a>
+</div>
+</section>
+<footer class="footer">
+<div class="footerLinks">
+<a class="footerLink" href="https://miniput.store" rel="noopener" target="_blank">
+<svg fill="none" stroke="currentColor" stroke-width="1.7" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21"></path><path d="M12 3c-2.4 2.5-3.6 5.5-3.6 9S9.6 18.5 12 21"></path></svg>
+      miniput.store
+    </a>
+<a class="footerLink" href="https://www.facebook.com/miniput" rel="noopener" target="_blank">
+<svg fill="currentColor" viewbox="0 0 24 24"><path d="M13.6 21v-8h2.7l.4-3h-3.1V8.1c0-.87.24-1.46 1.5-1.46h1.7V4a22 22 0 0 0-2.47-.13c-2.45 0-4.13 1.5-4.13 4.25V10H8v3h2.2v8h3.4Z"></path></svg>
+      Miniput
+    </a>
+<a class="footerLink" href="https://www.instagram.com/miniputcrafts/" rel="noopener" target="_blank">
+<svg fill="none" stroke="currentColor" stroke-width="1.7" viewbox="0 0 24 24"><rect height="17" rx="5" width="17" x="3.5" y="3.5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.7" r="1"></circle></svg>
+      Miniput Crafts
+    </a>
+</div>
+<p class="footerCopy">Miniput. All Rights Reserved.</p>
+</footer>
+</div>
+<script>
+const texts={
+bn:{
+ title:"পেমেন্ট ডিটেইলস",
+ subtitle:"আপনার অর্ডারটি নিশ্চিত করতে অনুগ্রহ করে আমাদের প্রতিনিধির জানানো নির্ধারিত পরিমাণ পেমেন্ট সম্পন্ন করুন।",
+ qrHeading:"বাংলা কিউআর",
+ qrLead:"আপনার কাছে উপলভ্য যেকোনো পেমেন্ট মাধ্যম থেকে নিচের কিউআর কোডটি স্ক্যান করে পেমেন্ট করুন।",
+ qrCaption:"স্ক্রিনশট নিয়ে বা স্ক্যান করে পেমেন্ট করুন",
+ bankHeading:"Bank Transfer(NPSB)",
+ bankIntro:"ব্যাংক ট্রান্সফারের জন্য আপনার সুবিধামতো ব্যাংক নির্বাচন করুন।",
+ accountNameLabel:"অ্যাকাউন্টের নাম",accountNumberLabel:"অ্যাকাউন্ট নম্বর",routingLabel:"রাউটিং নম্বর",branchLabel:"শাখা",
+ cityAccountNameLabel:"অ্যাকাউন্টের নাম",cityAccountNumberLabel:"অ্যাকাউন্ট নম্বর",cityRoutingLabel:"রাউটিং নম্বর",cityBranchLabel:"শাখা",
+ alternative:"বিকল্প",pathaoTitle:"Pathao Pay",pathaoSub:"Pathao Pay Bangla QR",bkashTitle:"bKash Merchant",
+ mfsHeading:"MFS Transfer",mfsIntro:"আপনার সুবিধামতো মোবাইল ফিন্যান্সিয়াল সার্ভিস নির্বাচন করুন।",mfsType:"Personal Account (Send Money)",personalNumber:"পার্সোনাল নম্বর",rocketFullNumber:"রকেট অ্যাকাউন্ট নম্বর",
+ confirmHeading:"পেমেন্ট নিশ্চিত করুন",
+ confirmText:"পেমেন্ট সম্পন্ন করার পর, আমাদের প্রতিনিধির সাথে যে মাধ্যমে কথা হয়েছে, সেখানেই <strong>পেমেন্ট স্ক্রিনশট বা পেমেন্টের বিষয়টি জানিয়ে দিন।</strong>",
+ messenger1:"Messenger: Miniput",instagram:"Instagram: Miniput",messenger2:"Messenger: Miniput BD",whatsapp:"WhatsApp",
+ importantHeading:"গুরুত্বপূর্ণ তথ্য",
+ info1:"রেফারেন্সে অবশ্যই আপনার আইডির নাম বা সম্পূর্ণ নাম উল্লেখ করুন।",
+ info2:"2,000 টাকার বেশি পেমেন্টের ক্ষেত্রে Bank Transfer (NPSB) ব্যবহারের জন্য বিশেষভাবে অনুরোধ রইল।",
+ info3:"যেকোনো পরিমাণ পেমেন্টের জন্য Bank Transfer (NPSB) ব্যবহার করতে পারেন।",
+ copy:"কপি",copied:"কপি হয়েছে"
+},
+en:{
+ title:"Payment Details",
+ subtitle:"To confirm your order, please complete the payment amount communicated to you by our representative.",
+ qrHeading:"Bangla QR",
+ qrLead:"Scan the QR code below using any payment method available to you and complete the payment.",
+ qrCaption:"Scan to Pay",
+ bankHeading:"Bank Transfer(NPSB)",
+ bankIntro:"Choose your preferred bank for bank transfer.",
+ accountNameLabel:"Account Name",accountNumberLabel:"Account Number",routingLabel:"Routing Number",branchLabel:"Branch",
+ cityAccountNameLabel:"Account Name",cityAccountNumberLabel:"Account Number",cityRoutingLabel:"Routing Number",cityBranchLabel:"Branch",
+ alternative:"Alternative",pathaoTitle:"Pathao Pay",pathaoSub:"Pathao Pay Bangla QR",bkashTitle:"bKash Merchant",
+ mfsHeading:"MFS Transfer",mfsIntro:"Choose your preferred mobile financial service.",mfsType:"Personal Account (Send Money)",personalNumber:"Personal Number",rocketFullNumber:"Rocket Account Number",
+ confirmHeading:"Confirm Your Payment",
+ confirmText:"After completing the payment, please send the <strong>payment screenshot or payment confirmation</strong> through the same channel where you were communicating with our representative.",
+ messenger1:"Messenger: Miniput",instagram:"Instagram: Miniput",messenger2:"Messenger: Miniput BD",whatsapp:"WhatsApp",
+ importantHeading:"Important Information",
+ info1:"In the reference, please mention your ID name or full name.",
+ info2:"For payments above BDT 2,000, we especially request you to use Bank Transfer (NPSB).",
+ info3:"You may use Bank Transfer (NPSB) for payments of any amount.",
+ copy:"Copy",copied:"Copied"
+}
+};
+
+let lang="bn";
+const $=id=>document.getElementById(id);
+
+function setLang(l){
+ lang=l;const t=texts[l];
+ document.documentElement.lang=l;
+ $("title").textContent=t.title;
+ $("subtitle").textContent=t.subtitle;
+ $("qrHeading").textContent=t.qrHeading;
+ $("qrLead").textContent=t.qrLead;
+ $("qrCaption").textContent=t.qrCaption;
+ $("bankHeading").textContent=t.bankHeading;
+ $("bankIntro").textContent=t.bankIntro;
+ $("accountNameLabel").textContent=t.accountNameLabel;
+ $("accountNumberLabel").textContent=t.accountNumberLabel;
+ $("routingLabel").textContent=t.routingLabel;
+ $("branchLabel").textContent=t.branchLabel;
+ $("cityAccountNameLabel").textContent=t.cityAccountNameLabel;
+ $("cityAccountNumberLabel").textContent=t.cityAccountNumberLabel;
+ $("cityRoutingLabel").textContent=t.cityRoutingLabel;
+ $("cityBranchLabel").textContent=t.cityBranchLabel;
+ $("alternativeTitle").textContent=t.alternative;
+ $("pathaoTitle").textContent=t.pathaoTitle;
+ $("pathaoSub").textContent=t.pathaoSub;
+ $("mfsHeading").textContent=t.mfsHeading;
+ $("mfsIntro").textContent=t.mfsIntro;
+ $("nagadType").textContent=t.mfsType;
+ $("rocketType").textContent=t.mfsType;
+ $("nagadNumberLabel").textContent=t.personalNumber;
+ $("rocketNumberLabel").textContent=t.personalNumber;
+ $("rocketFullNumberLabel").textContent=t.rocketFullNumber;
+ $("confirmHeading").textContent=t.confirmHeading;
+ $("confirmText").innerHTML=t.confirmText;
+ $("messenger1").textContent=t.messenger1;
+ $("instagram").textContent=t.instagram;
+ $("messenger2").textContent=t.messenger2;
+ $("whatsapp").textContent=t.whatsapp;
+ $("importantHeading").textContent=t.importantHeading;
+ $("info1").textContent=t.info1;
+ $("info2").textContent=t.info2;
+ if($("info3")) $("info3").textContent=t.info3;
+ document.querySelectorAll(".copyBtn").forEach(b=>b.textContent=t.copy);
+ $("bnBtn").classList.toggle("active",l==="bn");
+ $("enBtn").classList.toggle("active",l==="en");
+}
+$("bnBtn").onclick=()=>setLang("bn");
+$("enBtn").onclick=()=>setLang("en");
+
+document.querySelectorAll(".bankCard").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+   const details=$(btn.dataset.bank+"Details");
+   const wasOpen=details.classList.contains("open");
+   document.querySelectorAll(".bankCard").forEach(x=>x.classList.remove("active"));
+   document.querySelectorAll(".bankDetails").forEach(x=>x.classList.remove("open"));
+   if(!wasOpen){btn.classList.add("active");details.classList.add("open");}
+ });
+});
+
+
+document.querySelectorAll(".mfsCard").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+   const details=$(btn.dataset.mfs+"Details");
+   const wasOpen=details.classList.contains("open");
+   document.querySelectorAll(".mfsCard").forEach(x=>x.classList.remove("active"));
+   document.querySelectorAll(".mfsDetails").forEach(x=>x.classList.remove("open"));
+   if(!wasOpen){btn.classList.add("active");details.classList.add("open");}
+ });
+});
+
+$("alternativeBtn").addEventListener("click",()=>{
+ $("alternative").classList.toggle("open");
+});
+
+document.querySelectorAll(".copyBtn").forEach(button=>{
+ button.addEventListener("click",async()=>{
+   const id=button.dataset.copy;
+   const value=$(id).textContent.trim();
+   if(!value || value==="আপনার তথ্য") return;
+   try{
+     await navigator.clipboard.writeText(value);
+     const old=texts[lang].copy;
+     button.textContent=texts[lang].copied;
+     setTimeout(()=>button.textContent=old,1400);
+   }catch(e){}
+ });
+});
+</script>
+</body>
+</html>
